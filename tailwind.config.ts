@@ -52,11 +52,30 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Ajout des couleurs inspirées du design
+        paradise: {
+          DEFAULT: "#d6c09e", // beige inspiré de l'image de fond
+          dark: "#e0a660", // variante légèrement plus foncée
+        },
+        ocean: {
+          DEFAULT: "#222c2e", // beige inspiré de l'image de fond
+          dark: "#222b2c", // variante légèrement plus foncée
+        },
+        highlight: {
+          DEFAULT: "#8e2816", // rouge-orangé chaud
+          light: "#f08967",  // variante plus claire
+        },
+        mutedGreen: {
+          DEFAULT: "#94a89a", // vert doux et apaisant
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontSize: {
+        giant: "10em",
       },
       keyframes: {
         "accordion-down": {

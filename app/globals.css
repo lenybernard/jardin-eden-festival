@@ -67,3 +67,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .outline-title {
+    -webkit-text-stroke: 4px white; /* Contour blanc par défaut */
+    color: transparent; /* Le texte interne est transparent */
+  }
+
+  @media (max-width: 768px) {  /* Media query pour les écrans de taille inférieure ou égale à 768px */
+    .outline-title {
+      -webkit-text-stroke: 2px white; /* Réduire le contour à 1px pour mobile */
+    }
+  }
+}

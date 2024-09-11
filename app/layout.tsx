@@ -1,12 +1,7 @@
-import DeployButton from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderAuth from "@/components/header-auth";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
-import { GeistSans } from "geist/font/sans";
-import { ThemeProvider } from "next-themes";
-import Link from "next/link";
+import {ThemeSwitcher} from "@/components/theme-switcher";
+import {GeistSans} from "geist/font/sans";
 import "./globals.css";
+import Image from "next/image";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -14,8 +9,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Jardin d'Eden Festival",
+  description: "Découvrez un festival unique où la musique, la nature et la culture se rencontrent dans un cadre enchanteur. Le Jardin d'Eden Festival vous attend pour une célébration inoubliable de la musique live, de la gastronomie locale et des échanges culturels, dans le magnifique lieu nommé \"Le Paradis\", situé à Gétigné.",
 };
 
 export default function RootLayout({
@@ -24,49 +19,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col gap-20 items-center">
-              <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-                <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-                  <div className="flex gap-5 items-center font-semibold">
-                    <Link href={"/"}>Next.js Supabase Starter</Link>
-                    <div className="flex items-center gap-2">
-                      <DeployButton />
-                    </div>
-                  </div>
-                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
-                </div>
-              </nav>
-              <div className="flex flex-col gap-20 max-w-5xl p-5">
-                {children}
-              </div>
+      <html lang="fr" className={GeistSans.className} suppressHydrationWarning>
+      <meta charSet="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <meta httpEquiv="X-UA-Compatible" content="ie=edge"/>
+      <body className="bg-background text-foreground" style={{backgroundColor: "#d6c09e"}}>
+        <main>
+          {children}
+          <div className={"flex justify-center"}>
+            <Image src={"/cover.webp"} alt="logo" width={1000} height={1000}/>
+          </div>
 
-              <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-                <p>
-                  Powered by{" "}
-                  <a
-                    href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-                    target="_blank"
-                    className="font-bold hover:underline"
-                    rel="noreferrer"
-                  >
-                    Supabase
-                  </a>
-                </p>
-                <ThemeSwitcher />
-              </footer>
+          <footer style={{backgroundColor: "#ac8b5d"}} className="text-white py-6">
+            <div className="container mx-auto text-center">
+              <p>&copy; {new Date().getFullYear()} Le Jardin d'Eden Festival.</p>
+              <p>Contact: amaury.cornut@gmail.com | 06 73 29 01 02</p>
+              <p>
+                Code source disponible sur <a href="https://github.com/lenybernard/jardin-eden-festival">Github</a>
+              </p>
             </div>
-          </main>
-        </ThemeProvider>
+            <ThemeSwitcher/>
+          </footer>
+        </main>
       </body>
-    </html>
+      </html>
   );
 }
