@@ -40,32 +40,32 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
                 {artist.photo_url && (
                     <div className={`relative w-full md:w-1/3 h-64 md:h-auto ${isEven ? 'order-1' : 'order-2'}`}>
                         <img src={artist.photo_url} alt={artist.name} className="w-full h-full object-cover" />
-                        {/* Overlay et texte centré sur l'image */}
-                        <div className="absolute inset-0 bg-paradise bg-opacity-30 flex justify-center items-center">
-                            <h3 className="text-white text-3xl font-semibold text-center">{artist.name}</h3>
-                        </div>
                     </div>
                 )}
 
                 {/* Informations de l'artiste */}
                 <div className={`w-full md:w-2/3 p-6 flex flex-col justify-between ${isEven ? 'order-2' : 'order-1'}`}>
-                    {/* Nom et ville (affiché uniquement dans la partie info si l'image n'est pas présente) */}
-                    {!artist.photo_url && (
+                    {(
                         <div className="block">
                             <h3 className="text-3xl font-semibold mb-2">{artist.name}</h3>
-                            <p className="text-sm text-gray-500 mb-2">{artist.city}, {artist.country}</p>
+                            <p className="text-sm text-gray-500 mb-2">{artist.city && artist.city + ', '} {artist.country}</p>
                         </div>
                     )}
 
                     {/* Description */}
                     <p className="text-gray-700 mb-4">{artist.description}</p>
+                    {/* @todo fix Embed blinding
+                    <div dangerouslySetInnerHTML={{__html: artist.embed}}></div>*/}
+
 
                     {/* Genre et instruments */}
                     <div>
-                        <p className="text-sm font-bold"><span className={'text-paradise'}>Genre:</span> {artist.genre}</p>
+                        <p className="text-sm font-bold"><span className={'text-paradise'}>Genre:</span> {artist.genre}
+                        </p>
                         {artist.artist_instrument.length > 0 && (
                             <p className="text-sm font-bold">
-                                <span className={'text-paradise'}>Instruments:</span> {artist.artist_instrument.map((artist_instrument) => (
+                                <span
+                                    className={'text-paradise'}>Instruments:</span> {artist.artist_instrument.map((artist_instrument) => (
                                 <span key={artist_instrument.instrument.name} className="text-sm mr-1">
                                         {artist_instrument.instrument.name}
                                     </span>
@@ -87,11 +87,17 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
                             </a>
                         </div>
                     )}
-
                     {/* Date et ordre de passage */}
-                    <div className="mt-4 text-sm text-gray-500">
-                        <p>Heure de passage: {artist.day.short_name} {formatTime(artist.timePassage)}</p>
-                    </div>
+                    {artist.timePassage &&
+                        <div className="mt-4 text-sm text-gray-500">
+                            <p>Heure de passage: {artist.day.short_name} {formatTime(artist.timePassage)}</p>
+                        </div>
+                    }
+                    {artist.photoCredit &&
+                        <div className="mt-4 text-sm text-gray-500">
+                            <p>Crédit photo: {artist.photoCredit}</p>
+                        </div>
+                    }
                 </div>
             </motion.div>
 
@@ -108,7 +114,7 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
                 }}
                 animate={{
                     scale: cursorSize === 60 ? 1.1 : 1,
-                    transition: { duration: 0.1 },
+                    transition: {duration: 0.1},
                 }}
             />
         </div>

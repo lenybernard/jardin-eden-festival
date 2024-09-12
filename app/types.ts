@@ -24,7 +24,9 @@ export type Artist = {
     "genre": string,
     "country": string,
     "description": string,
+    "embed": string,
     "photo_url": string,
+    "photoCredit": string,
     "info_link": string,
     "slug": string,
     "lineup_order": number
