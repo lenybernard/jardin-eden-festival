@@ -1,7 +1,10 @@
-import type { Config } from "tailwindcss";
+import type {Config} from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
+  safelist: [
+    'col-span-1', 'col-span-2', 'row-span-1', 'row-span-2',
+  ],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -75,7 +78,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontSize: {
-        giant: "10em",
+        giant: "12em",
       },
       keyframes: {
         "accordion-down": {

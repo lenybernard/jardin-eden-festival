@@ -5,6 +5,7 @@ import {FestivalInfo} from "@/app/types";
 import {FaChevronDown} from 'react-icons/fa';
 import {motion, useScroll, useTransform} from 'framer-motion';
 import {useEffect, useState} from 'react';
+import {Time} from "@/components/utils/time";
 
 // Charger la police League Gothic
 const leagueGothic = League_Gothic({
@@ -116,7 +117,7 @@ export default function Header({ festival_info }: HeaderProps) {
             <div className={`relative z-40 max-w-7xl mx-auto text-white flex ${isMobile ? 'flex-col items-center' : 'lg:flex-row items-start lg:items-center'}`}>
                 {/* Section gauche avec le titre */}
                 <motion.div
-                    className={`w-full lg:w-1/2 lg:pl-20 lg:pr-10 mb-10 lg:mb-0 ${isMobile ? 'text-center text-4xl mt-20' : 'lg:mt-56'}`}
+                    className={`w-full lg:w-1/2 lg:pl-20 lg:pr-10 mb-10 lg:mb-0 ${isMobile ? 'text-center text-4xl mt-20' : 'lg:mt-40'}`}
                     style={isMobile ? { letterSpacing: "normal" } : { y: yTitle, letterSpacing: "1em" }}  // Sur mobile, pas d'espacement entre les lettres
                 >
                     <div className={`${leagueGothic.className} ${isMobile ? 'text-7xl' : 'text-giant'} uppercase font-extrabold outline-title`}>
@@ -127,54 +128,29 @@ export default function Header({ festival_info }: HeaderProps) {
                 {/* Section droite avec les informations en quinconce */}
                 <div className={`w-full lg:w-1/2 space-y-8 ${isMobile ? 'text-center' : 'text-left'}`}>
                     <div className="space-y-4">
-                        {/* Informations pour le 5 octobre avec scroll smooth */}
-                        <a href="#" onClick={() => scrollToContent("oct5")}>
-                            <div
-                                className="bg-white rounded-full px-8 py-4 text-2xl font-semibold text-highlight mt-8 mb-6 lg:mt-24 max-w-md mx-auto text-center flex justify-center items-center">
-                                SAM 5 OCT<br/>19h00 - 00h00
-                            </div>
-                        </a>
-                        <ul className="text-3xl uppercase space-y-2 text-center items-center">
-                            <li>
-                                <a href="#" onMouseEnter={() => setCursorSize(60)} onMouseLeave={() => setCursorSize(24)}
-                                   onClick={() => scrollToContent("boubacar")} className="hover:underline">
-                                    Boubacar Cissoko&nbsp;<span className="text-lg">(LIVE)</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" onMouseEnter={() => setCursorSize(60)} onMouseLeave={() => setCursorSize(24)}
-                                   onClick={() => scrollToContent("munatak")} className="hover:underline">
-                                    Mun Atak&nbsp;<span className="text-lg">(LIVE)</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" onMouseEnter={() => setCursorSize(60)} onMouseLeave={() => setCursorSize(24)}
-                                   onClick={() => scrollToContent("bloodyl")} className="hover:underline">
-                                    Bloody L&nbsp;<span className="text-lg">(DJ SET)</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div className="space-y-4">
-                        {/* Informations pour le 6 octobre avec scroll smooth */}
-                        <a href="#" onClick={() => scrollToContent("oct6")}>
-                            <div
-                                className="bg-white rounded-full px-8 py-4 text-2xl font-semibold text-highlight mt-8 mb-6 max-w-md mx-auto text-center flex justify-center items-center">
-                                DIM 6 OCT<br/>14h00 - 22h00
-                            </div>
-                        </a>
-                        <ul className="text-3xl uppercase space-y-2 text-center items-center">
-                            <li><a href="#" onClick={() => scrollToContent("damalinelune")} className="hover:underline" onMouseEnter={() => setCursorSize(60)} onMouseLeave={() => setCursorSize(24)}>
-                                Damaline Lune&nbsp;<span className="text-lg">(LECTURES)</span>
-                            </a>
-                            </li>
-                            <li>
-                            <a href="#" onClick={() => scrollToContent("bourse")} className="hover:underline" onMouseEnter={() => setCursorSize(60)} onMouseLeave={() => setCursorSize(24)}>
-                                Bourse livres &amp; vinyles / Expo / Jeux en bois / Fleurs Bio
-                            </a>
-                            </li>
-                        </ul>
+                        {festival_info.day.map((day, index) => {
+                            return (
+                                <div key={index} id={day.startAt}>
+                                    <a href="#" onClick={() => scrollToContent('day-' + day.id)}>
+                                        <div
+                                            className="bg-white rounded-full px-8 py-4 text-2xl font-semibold text-highlight mt-8 mb-6 lg:mt-24 max-w-md mx-auto text-center flex justify-center items-center">
+                                            {day.short_name}<br/><Time value={day.startAt}/> - <Time value={day.endAt}/>
+                                        </div>
+                                    </a>
+                                    <ul className="text-3xl uppercase space-y-2 text-center items-center">
+                                        {day.artist.map((artist, index) => (
+                                        <li>
+                                            <a href="#" onMouseEnter={() => setCursorSize(60)}
+                                               onMouseLeave={() => setCursorSize(24)}
+                                               onClick={() => scrollToContent(artist.slug)} className="hover:underline">
+                                                {artist.name}&nbsp;<span className="text-lg">{artist.genre && (<>({artist.genre})</>)}</span>
+                                            </a>
+                                        </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
@@ -213,7 +189,7 @@ export default function Header({ festival_info }: HeaderProps) {
 
             {/* Curseur personnalisé avec effet de clic */}
             <motion.div
-                className="fixed top-0 left-0 pointer-events-none z-60"  // Z-index ajusté pour que le curseur reste au-dessus
+                className="fixed top-0 left-0 pointer-events-none z-60"
                 style={{
                     width: cursorSize,
                     height: cursorSize,

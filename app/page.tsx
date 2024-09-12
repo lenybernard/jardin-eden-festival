@@ -3,11 +3,12 @@ import {createClient} from "@/utils/supabase/server";
 import {Artist, Day, FestivalInfo} from "@/app/types";
 import {ArtistCard} from "@/components/ui/ArtistCard";
 import {Time} from "@/components/utils/time";
+import {FoodShowcaseCarousel} from "@/components/ui/FoodShowcaseCarousel";
 
 export default async function Index() {
     const supabase = createClient()
     const { data } = await supabase.from('festival_info').select(
-        '*, day(*, artist(*, artist_instrument(instrument(*)), day(*)))'
+        '*, food_info(*), day(*, artist(*, artist_instrument(instrument(*)), day(*)))'
     ).filter('edition', 'eq', '2024')
     if (!data || !data.length) {
         return <p>No data</p>
@@ -36,7 +37,7 @@ export default async function Index() {
                         <div>
                             {festival_info.day.map((day, index) => {
                                 return (
-                                    <div key={index} id={day.startAt}>
+                                    <div key={index} id={'day-' + day.id}>
                                     <h3 className="text-3xl font-bold text-gray-800 mb-4">{day.name}</h3>
                                     <p className="text-lg text-gray-700 space-y-2">
                                         🕒 <Time value={day.startAt}/> - <Time value={day.endAt}/>
@@ -56,19 +57,15 @@ export default async function Index() {
                             )}
                         </div>
                 </div>
-    </section>
-
-        {/* Activities Section */}
-        <section className="py-12 bg-white">
-            <div className="max-w-4xl mx-auto text-center px-4">
-                    <h2 className="text-4xl font-semibold text-highlight mb-8">Mais aussi...</h2>
-                    <p className="text-lg text-gray-700 mb-4">📚 Bourse aux livres & vinyles</p>
-                    <p className="text-lg text-gray-700 mb-4">🎨 Exposition artistique</p>
-                    <p className="text-lg text-gray-700 mb-4">🎲 Jeux en bois</p>
-                    <p className="text-lg text-gray-700 mb-4">🌸 Fleurs bio</p>
-                    <p className="text-lg text-gray-700 mb-4">🤩 et de nombreuses surprises...</p>
-                </div>
-            </section>
+        </section>
+        {/* Food & Drink Section */}
+        <section className="pt-12 min-h-[800px]" >
+            <div id={"content-section"} className="max-w-8xl mx-auto text-center px-4 pb-16">
+                <h2 className="text-4xl font-semibold text-highlight mb-8">Vos papilles aussi vont s'en souvenir</h2>
+                <div className="text-2xl font-semibold text-white mb-8">On a mis les petits plats dans les grands</div>
+                <FoodShowcaseCarousel foods={festival_info.food_info}/>
+            </div>
+        </section>
 
         {/* Info Section */}
             <section className="py-12 bg-highlight text-white">
@@ -80,16 +77,5 @@ export default async function Index() {
                 </div>
             </section>
 
-        {/* Food & Drink Section */}
-            <section className="py-12 bg-white">
-                <div className="max-w-4xl mx-auto text-center px-4">
-                    <h2 className="text-4xl font-semibold text-highlight mb-8">Miam miam</h2>
-                    <p className="text-lg text-gray-700 mb-4">🍽️ Bar à huîtres</p>
-                    <p className="text-lg text-gray-700 mb-4">🍴 Food by BRUT</p>
-                    <p className="text-lg text-gray-700 mb-4">🍷 Vins naturels</p>
-                    <p className="text-lg text-gray-700 mb-4">🍺 Bière bio</p>
-                    <p className="text-lg text-gray-700 mb-4">🍹 Jus bio</p>
-                </div>
-            </section>
         </div>
 }
