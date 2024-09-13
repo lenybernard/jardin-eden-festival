@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-      <html lang="fr" className={GeistSans.className} suppressHydrationWarning>
+      <html lang="fr" className={GeistSans.className}>
       <meta charSet="UTF-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <meta httpEquiv="X-UA-Compatible" content="ie=edge"/>
@@ -32,7 +32,7 @@ export default function RootLayout({
 
           <footer style={{backgroundColor: "#ac8b5d"}} className="text-white py-6">
             <div className="container mx-auto text-center">
-              <p>&copy; {new Date().getFullYear()} Le Jardin d'Eden Festival.</p>
+              <p>&copy; Le Jardin d'Eden.</p>
               <p>Contact: amaury.cornut@gmail.com | 06 73 29 01 02</p>
               <p>
                 Code source disponible sur <a href="https://github.com/lenybernard/jardin-eden-festival">Github</a>

@@ -1,7 +1,7 @@
 "use client";
 
 import {League_Gothic} from 'next/font/google'; // Importer League Gothic depuis Google Fonts
-import {FestivalInfo} from "@/app/types";
+import {Artist, FestivalInfo} from "@/app/types";
 import {FaChevronDown} from 'react-icons/fa';
 import {motion, useScroll, useTransform} from 'framer-motion';
 import {useEffect, useState} from 'react';
@@ -19,7 +19,15 @@ type HeaderProps = {
 
 export default function Header({ festival_info }: HeaderProps) {
     // Sur mobile, le titre sera sans éclatement et plus petit
-    const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        handleResize(); // Initial check
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
     const eventNameWithLineBreaks = isMobile
         ? festival_info.event_name
         : festival_info.event_name.split(' ').map((word, index) => (
@@ -28,7 +36,6 @@ export default function Header({ festival_info }: HeaderProps) {
 
     const scrollToContent = (id: string) => {
         const element = document.getElementById(id);
-        console.log(element)
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
@@ -129,6 +136,11 @@ export default function Header({ festival_info }: HeaderProps) {
                 <div className={`w-full lg:w-1/2 space-y-8 ${isMobile ? 'text-center' : 'text-left'}`}>
                     <div className="space-y-4">
                         {festival_info.day.map((day, index) => {
+                            const lineUp = day.artist.sort((a: Artist, b: Artist) => {
+                                if (a.lineup_order === null) return 1; // Place `null` à la fin
+                                if (b.lineup_order === null) return -1; // Place `null` à la fin
+                                return a.lineup_order - b.lineup_order; // Tri normal pour les autres
+                            });
                             return (
                                 <div key={index} id={day.startAt}>
                                     <a href="#" onClick={() => scrollToContent('day-' + day.id)}>
@@ -138,7 +150,7 @@ export default function Header({ festival_info }: HeaderProps) {
                                         </div>
                                     </a>
                                     <ul className="text-3xl uppercase space-y-2 text-center items-center">
-                                        {day.artist.map((artist, index) => (
+                                        {lineUp.map((artist, index) => (
                                         <li>
                                             <a href="#" onMouseEnter={() => setCursorSize(60)}
                                                onMouseLeave={() => setCursorSize(24)}

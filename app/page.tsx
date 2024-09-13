@@ -36,6 +36,12 @@ export default async function Index() {
                     <h2 className="text-4xl font-semibold text-highlight mb-8">Programme</h2>
                         <div>
                             {festival_info.day.map((day, index) => {
+                                // sort by timePassage
+                                const sortedArtists = day.artist.sort((a: Artist, b: Artist) => {
+                                    if (a.timePassage === null) return 1; // Place `null` à la fin
+                                    if (b.timePassage === null) return -1; // Place `null` à la fin
+                                    return a.timePassage.localeCompare(b.timePassage); // Tri normal pour les autres
+                                });
                                 return (
                                     <div key={index} id={'day-' + day.id}>
                                     <h3 className="text-3xl font-bold text-gray-800 mb-4">{day.name}</h3>
@@ -45,7 +51,7 @@ export default async function Index() {
 
                                     <section id={day.short_name} className="py-16 text-gray-800">
                                         <div className="container mx-auto px-4">
-                                                {day.artist.map((artist, index) => (
+                                                {sortedArtists.map((artist, index) => (
                                                     <div key={index} id={artist.slug} className={'my-16'}>
                                                         <ArtistCard artist={artist} isEven={index % 2 === 0}/>
                                                     </div>
