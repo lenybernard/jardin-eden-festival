@@ -2,34 +2,44 @@
 
 import {motion} from "framer-motion";
 import {FaChevronLeft, FaChevronRight} from "react-icons/fa";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {FoodInfo} from "@/app/types";
 import {useSwipeable} from "react-swipeable";
 
 export const FoodShowcaseCarousel = ({ foods }: { foods: FoodInfo[] }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
-
-    const visibleItemsCount = 5;
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to hold the timeout
 
     // Fonction pour avancer d'une carte
     const handleNext = () => {
         setActiveIndex((prevIndex) => (prevIndex + 1) % foods.length);
-        setIsPaused(true); // Stop autoplay
+        resetAutoplay(); // Reset autoplay timer
     };
 
     // Fonction pour revenir d'une carte
     const handlePrevious = () => {
         setActiveIndex((prevIndex) => (prevIndex === 0 ? foods.length - 1 : prevIndex - 1));
-        setIsPaused(true); // Stop autoplay
+        resetAutoplay(); // Reset autoplay timer
     };
 
-    // Autoslide toutes les 10 secondes
+    // Fonction pour réactiver l'autoplay après 5 secondes d'inactivité
+    const resetAutoplay = () => {
+        setIsPaused(true); // Pauses the autoplay when interacting
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current); // Clear any existing timeouts
+        }
+        timeoutRef.current = setTimeout(() => {
+            setIsPaused(false); // Re-enable autoplay after 5 seconds of inactivity
+        }, 5000);
+    };
+
+    // Autoslide toutes les 5 secondes si isPaused est false
     useEffect(() => {
         if (!isPaused) {
             const interval = setInterval(() => {
                 handleNext();
-            }, 10000);
+            }, 5000);
             return () => clearInterval(interval);
         }
     }, [isPaused]);
@@ -38,6 +48,7 @@ export const FoodShowcaseCarousel = ({ foods }: { foods: FoodInfo[] }) => {
     const handlers = useSwipeable({
         onSwipedLeft: handleNext,
         onSwipedRight: handlePrevious,
+        onSwiping: resetAutoplay, // Reset autoplay when user swipes
     });
 
     // Calcul des items visibles dans le carousel
@@ -52,10 +63,7 @@ export const FoodShowcaseCarousel = ({ foods }: { foods: FoodInfo[] }) => {
     const visibleItems = getVisibleItems();
 
     return (
-        <div
-            className="relative flex flex-col items-center overflow-hidden"
-            {...handlers}
-        >
+        <div className="relative flex flex-col items-center overflow-hidden" {...handlers}>
             {/* Boutons de navigation */}
             <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 hidden md:block">
                 <button

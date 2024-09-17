@@ -27,6 +27,16 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
     // Fonction pour agrandir et rétrécir le curseur lors du survol
     const handleMouseEnter = () => setCursorSize(60);
     const handleMouseLeave = () => setCursorSize(24);
+    const instruments = artist.artist_instrument.length > 0 && artist.artist_instrument.map((artist_instrument) => (
+            <span key={artist_instrument.instrument.name} className="text-sm mr-1">
+                    {artist_instrument.instrument.name}
+                </span>
+        ))
+    const genreAndInstruments = <div>
+            <p className="text-sm font-bold">
+                <span className={"text-paradise"}>Genre:</span> {artist.genre} {instruments && instruments}
+            </p>
+    </div>
 
     return (
         <div>
@@ -68,22 +78,7 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
                         </div>
                     )}
 
-                    {/* Genre et instruments */}
-                    <div>
-                        <p className="text-sm font-bold">
-                            <span className={"text-paradise"}>Genre:</span> {artist.genre}
-                        </p>
-                        {artist.artist_instrument.length > 0 && (
-                            <p className="text-sm font-bold">
-                                <span className={"text-paradise"}>Instruments:</span>{" "}
-                                {artist.artist_instrument.map((artist_instrument) => (
-                                    <span key={artist_instrument.instrument.name} className="text-sm mr-1">
-                    {artist_instrument.instrument.name}
-                  </span>
-                                ))}
-                            </p>
-                        )}
-                    </div>
+                    {genreAndInstruments}
 
                     {/* Lien d'information supplémentaire */}
                     {artist.info_link && (

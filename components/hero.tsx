@@ -37,7 +37,9 @@ export default function Header({ festival_info }: HeaderProps) {
     const scrollToContent = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
         }
     };
 
@@ -121,13 +123,18 @@ export default function Header({ festival_info }: HeaderProps) {
             </div>
 
             {/* Section titre et informations avec effet parallax sur le titre */}
-            <div className={`relative z-40 max-w-7xl mx-auto text-white flex ${isMobile ? 'flex-col items-center' : 'lg:flex-row items-start lg:items-center'}`}>
+            <div
+                className={`relative z-40 max-w-7xl mx-auto text-white flex ${isMobile ? 'flex-col items-center' : 'lg:flex-row items-start lg:items-center'}`}>
                 {/* Section gauche avec le titre */}
                 <motion.div
                     className={`w-full lg:w-1/2 lg:pl-20 lg:pr-10 mb-10 lg:mb-0 ${isMobile ? 'text-center text-4xl mt-20' : 'lg:mt-40'}`}
-                    style={isMobile ? { letterSpacing: "normal" } : { y: yTitle, letterSpacing: "1em" }}  // Sur mobile, pas d'espacement entre les lettres
+                    style={isMobile ? {letterSpacing: "normal"} : {
+                        y: yTitle,
+                        letterSpacing: "1em"
+                    }}  // Sur mobile, pas d'espacement entre les lettres
                 >
-                    <div className={`${leagueGothic.className} ${isMobile ? 'text-7xl' : 'text-giant'} uppercase font-extrabold outline-title`}>
+                    <div
+                        className={`${leagueGothic.className} ${isMobile ? 'text-7xl' : 'text-giant'} uppercase font-extrabold outline-title`}>
                         {eventNameWithLineBreaks}
                     </div>
                 </motion.div>
@@ -149,29 +156,59 @@ export default function Header({ festival_info }: HeaderProps) {
                                             {day.short_name}<br/><Time value={day.startAt}/> - <Time value={day.endAt}/>
                                         </div>
                                     </a>
-                                    <ul className="text-3xl uppercase space-y-2 text-center items-center">
-                                        {lineUp.map((artist, index) => (
-                                        <li>
-                                            <a href="#" onMouseEnter={() => setCursorSize(60)}
-                                               onMouseLeave={() => setCursorSize(24)}
-                                               onClick={() => scrollToContent(artist.slug)} className="hover:underline">
-                                                {artist.name}&nbsp;<span className="text-lg">{artist.genre && (<>({artist.genre})</>)}</span>
-                                            </a>
-                                        </li>
-                                        ))}
+                                    <ul className={`text-3xl uppercase space-y-2 text-center items-center ${isMobile && 'text-xl'}`}>
+                                        {lineUp.length > 3 ? (
+                                            // S'il y a plus de 3 artistes, ajouter des virgules
+                                            lineUp.map((artist, index) => (
+                                                <li key={index}
+                                                    className="inline">
+                                                    <a href="#"
+                                                       onMouseEnter={() => setCursorSize(60)}
+                                                       onMouseLeave={() => setCursorSize(24)}
+                                                       onClick={() => scrollToContent(`artist-${artist.id}`)}
+                                                       className="hover:underline">
+                                                        {artist.name}&nbsp;
+                                                        <span className="text-lg">
+                        {artist.genre && (<>({artist.genre})</>)}
+                    </span>
+                                                    </a>
+                                                    {/* Ajouter une virgule sauf pour le dernier artiste */}
+                                                    {index < lineUp.length - 1 && ', '}
+                                                </li>
+                                            ))
+                                        ) : (
+                                            // Moins ou 3 artistes, pas de virgule, comportement normal
+                                            lineUp.map((artist, index) => (
+                                                <li key={index}>
+                                                    <a href="#"
+                                                       onMouseEnter={() => setCursorSize(60)}
+                                                       onMouseLeave={() => setCursorSize(24)}
+                                                       onClick={() => scrollToContent(`artist-${artist.id}`)}
+                                                       className="hover:underline">
+                                                        {artist.name}&nbsp;
+                                                        <span className="text-lg">
+                        {artist.genre && (<>({artist.genre})</>)}
+                    </span>
+                                                    </a>
+                                                </li>
+                                            ))
+                                        )}
                                     </ul>
+
+
                                 </div>
                             )
                         })}
                     </div>
                 </div>
+
             </div>
 
             {/* Bouton avec une icône pour scroll smooth et effet hover */}
             <motion.div
                 className="absolute bottom-8 w-full text-center z-50"  // Bouton au-dessus de tout sauf le curseur
-                whileHover={{ scale: 1.2 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                whileHover={{scale: 1.2}}
+                transition={{type: "spring", stiffness: 300}}
                 onMouseEnter={() => {
                     setIsHovered(true);
                     setCursorSize(60);
@@ -185,15 +222,15 @@ export default function Header({ festival_info }: HeaderProps) {
                     onClick={() => scrollToContent("content-section")}
                     className="text-white text-4xl bg-highlight rounded-full p-4"
                 >
-                    <FaChevronDown />
+                    <FaChevronDown/>
                 </button>
 
                 {/* Texte "Plus d'infos" qui apparaît au survol */}
                 <motion.span
                     className="block mt-4 text-xl text-white"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: isHovered ? 1 : 0 }}  // Changement d'opacité lors du survol
-                    transition={{ duration: 0.3 }}
+                    initial={{opacity: 0}}
+                    animate={{opacity: isHovered ? 1 : 0}}  // Changement d'opacité lors du survol
+                    transition={{duration: 0.3}}
                 >
                     Plus d'infos
                 </motion.span>
@@ -212,7 +249,7 @@ export default function Header({ festival_info }: HeaderProps) {
                 }}
                 animate={{
                     scale: isClicked ? 0.5 : cursorSize === 60 ? 1.1 : 1,
-                    transition: { duration: 0.1 },
+                    transition: {duration: 0.1},
                 }}
             />
         </div>

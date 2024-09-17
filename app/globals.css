@@ -70,8 +70,12 @@
 
 @layer utilities {
   .outline-title {
-    -webkit-text-stroke: 4px white; /* Contour blanc par défaut */
-    color: transparent; /* Le texte interne est transparent */
+    -webkit-text-stroke: 4px white;
+    color: transparent;
+  }
+  .outline-title-lite {
+    -webkit-text-stroke: 2px white;
+
   }
 
   @media (max-width: 768px) {  /* Media query pour les écrans de taille inférieure ou égale à 768px */

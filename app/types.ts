@@ -9,9 +9,13 @@ export type FestivalInfo = {
     location: string,
     price: string,
     additional_info: string
+    store_url: string
+    store_button_label: string
+    practical_informations_extra: string
     date: string
     address: string
     city: string
+    address_info_link: string
     edition: string
     day: Day[]
     food_info: FoodInfo[]
