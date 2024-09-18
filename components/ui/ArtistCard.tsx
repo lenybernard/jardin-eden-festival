@@ -32,7 +32,7 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
                     {artist_instrument.instrument.name}
                 </span>
         ))
-    const genreAndInstruments = <div>
+    const genreAndInstruments = artist.genre && <div>
             <p className="text-sm font-bold">
                 <span className={"text-paradise"}>Genre:</span> {artist.genre} {instruments && instruments}
             </p>
@@ -40,12 +40,8 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
 
     return (
         <div>
-            <motion.div
+            <div
                 className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden max-w-full mb-8"
-                whileHover={{ scale: 1.05 }} // Animation Framer Motion pour le survol
-                transition={{ type: "spring", stiffness: 300 }} // Paramètres de l'animation
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
             >
                 {/* Image de l'artiste avec overlay pour mobile */}
                 {artist.photo_url && (
@@ -71,7 +67,7 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-700 mb-4">{artist.description}</p>
+                    <p className="text-gray-700 my-6 text-justify" dangerouslySetInnerHTML={{__html: artist.description}}/>
                     {artist.embed && (
                         <div className={"w-4/5 m-auto"}>
                             <ReactPlayer url={artist.embed} height={"100px"}/>
@@ -101,7 +97,7 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
                         </div>
                     )}
                 </div>
-            </motion.div>
+            </div>
 
             {/* Curseur personnalisé */}
             <motion.div

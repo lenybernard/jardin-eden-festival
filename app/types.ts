@@ -51,6 +51,7 @@ export type Day = {
     id: string,
     name: string,
     short_name: string,
+    description: string,
     startAt: string,
     endAt: string,
     artist: Artist[]

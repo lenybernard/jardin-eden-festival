@@ -6,6 +6,7 @@ import {FaChevronDown} from 'react-icons/fa';
 import {motion, useScroll, useTransform} from 'framer-motion';
 import {useEffect, useState} from 'react';
 import {Time} from "@/components/utils/time";
+import {useSmoothScroll} from "@/hooks/useSmoothScroll";
 
 // Charger la police League Gothic
 const leagueGothic = League_Gothic({
@@ -34,14 +35,8 @@ export default function Header({ festival_info }: HeaderProps) {
             <span key={index} className="block leading-none">{word}</span> // Utilisation de block pour éclater le texte
         ));
 
-    const scrollToContent = (id: string) => {
-        const element = document.getElementById(id);
-        if (element) {
-            setTimeout(() => {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }, 300);
-        }
-    };
+    const scrollToContent = useSmoothScroll();
+
 
     // Parallax scroll effect setup avec useScroll
     const { scrollY } = useScroll();  // Capture la position de défilement

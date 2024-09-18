@@ -3,8 +3,8 @@
 import {useEffect, useState} from "react";
 import {League_Gothic} from 'next/font/google';
 import {useSmoothScroll} from "@/hooks/useSmoothScroll";
-import {FestivalInfo} from "@/app/types"; // Importer le hook
-import {FaBars, FaTimes} from "react-icons/fa"; // Importer les icônes de menu hamburger
+import {FestivalInfo} from "@/app/types";
+import {FaBars, FaTimes} from "react-icons/fa";
 
 const leagueGothic = League_Gothic({
     weight: '400',
@@ -13,10 +13,9 @@ const leagueGothic = League_Gothic({
 
 export const StickyMenu = ({ festivalInfo }: { festivalInfo: FestivalInfo }) => {
     const [isSticky, setIsSticky] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // État pour gérer l'ouverture du menu mobile
-    const scrollToContent = useSmoothScroll(); // Utilisation du hook personnalisé
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const scrollToContent = useSmoothScroll();
 
-    // Fonction pour faire défiler tout en haut de la page
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -24,10 +23,9 @@ export const StickyMenu = ({ festivalInfo }: { festivalInfo: FestivalInfo }) => 
         });
     };
 
-    // Fonction pour vérifier le scroll et activer le sticky menu
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 200) { // Change the number to adjust when it should stick
+            if (window.scrollY > 900) {
                 setIsSticky(true);
             } else {
                 setIsSticky(false);
@@ -78,16 +76,16 @@ export const StickyMenu = ({ festivalInfo }: { festivalInfo: FestivalInfo }) => 
                     >
                         Programme
                     </a>
-                    <a
-                        href="#food-and-drink"
-                        className="text-gray-700 hover:text-highlight"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            scrollToContent("food-and-drink");
-                        }}
-                    >
-                        À boire et à manger
-                    </a>
+                    {/*<a*/}
+                    {/*    href="#food-and-drink"*/}
+                    {/*    className="text-gray-700 hover:text-highlight"*/}
+                    {/*    onClick={(e) => {*/}
+                    {/*        e.preventDefault();*/}
+                    {/*        scrollToContent("food-and-drink");*/}
+                    {/*    }}*/}
+                    {/*>*/}
+                    {/*    À boire et à manger*/}
+                    {/*</a>*/}
                     <a
                         href="#informations"
                         className="text-gray-700 hover:text-highlight"
