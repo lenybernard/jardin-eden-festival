@@ -58,7 +58,7 @@ export const ArtistCard = ({ artist, isEven }: { artist: Artist; isEven: boolean
                 )}
 
                 {/* Informations de l'artiste */}
-                <div className={`w-full md:w-2/3 p-6 flex flex-col justify-between ${isEven ? "order-2" : "order-1"}`}>
+                <div className={`w-full md:w-2/3 p-6 flex flex-col ${isEven ? "order-2" : "order-1"}`}>
                     <div className="block">
                         <h3 className="text-3xl font-semibold mb-2">{artist.name}</h3>
                         <p className="text-sm text-gray-500 mb-2">
